@@ -14,16 +14,19 @@ namespace Dii_TheaterManagement_Bff.Controllers
     public class MoviesController : ControllerBase
     {
         private readonly OrderingSvcClient _orderingSvcClient;
+        private readonly MovieCatalogSvcClient movieCatalogSvcClient;
 
-        public MoviesController(OrderingSvcClient orderingSvcClient)
+        public MoviesController(OrderingSvcClient orderingSvcClient, MovieCatalogSvcClient movieCatalogSvcClient)
         {
             _orderingSvcClient = orderingSvcClient;
+            this.movieCatalogSvcClient = movieCatalogSvcClient;
         }
 
         // GET: api/Movies
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Movie>>> GetMovies()
         {
+            var str = await movieCatalogSvcClient.GetMovies();
             var movies = await _orderingSvcClient.ApiMoviesGetAsync();
             return movies.ToList();
         }

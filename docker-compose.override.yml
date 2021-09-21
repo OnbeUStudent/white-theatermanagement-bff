@@ -7,14 +7,7 @@ services:
     ports:
       - "80"
 
-  dii_orderingsvc.fake:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-    ports:
-      - "80"
-
-
-  dii_moviecatalogsvc.fake:
+  providers.fake:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
     ports:

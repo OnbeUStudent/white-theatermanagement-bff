@@ -30,7 +30,6 @@ namespace Dii_TheaterManagement_Bff
 
         public IConfiguration Configuration { get; }
         private readonly string _policyName = "CorsPolicy";
-        public static string OrderingHttpClientBaseAddress = string.Empty;
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -107,7 +106,7 @@ namespace Dii_TheaterManagement_Bff
             services.AddScoped<FakeUserFactory>();
 
             services.AddHttpContextAccessor();
-            services.AddApplicationServices();
+            AddApplicationServices(services);
             services.AddCors(opt =>
             {
                 opt.AddPolicy(name: _policyName, builder =>
@@ -128,7 +127,7 @@ namespace Dii_TheaterManagement_Bff
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Dii_TheaterManagement_Bff v1"));
             }
-
+           
             app.UseRouting();
             app.UseCors(_policyName);
 
@@ -141,34 +140,23 @@ namespace Dii_TheaterManagement_Bff
                 endpoints.MapHealthChecks("/hc");
             });
         }
-    }
 
-    public static class ServiceCollectionExtensions
-    {
-        public static IServiceCollection AddApplicationServices(this IServiceCollection services)
+        public virtual void AddApplicationServices(IServiceCollection services)
         {
-            if (Startup.OrderingHttpClientBaseAddress == string.Empty)
-            {
+          
                 services.AddSingleton(typeof(OrderingSvcClient), serviceProvider =>
                 {
                     var httpClient = DaprClient.CreateInvokeHttpClient("diiorderingsvc");
+                    httpClient.DefaultRequestHeaders.Add("dapr-app-id", "diiorderingsvc");
                     return new OrderingSvcClient(httpClient);
                 });
                 services.AddSingleton(typeof(MovieCatalogSvcClient), serviceProvider =>
                 {
                     var httpClient = DaprClient.CreateInvokeHttpClient("diimoviecatalogsvc");
+                    httpClient.DefaultRequestHeaders.Add("dapr-app-id", "diimoviecatalogsvc");
                     return new MovieCatalogSvcClient(httpClient);
                 });
-            }
-            else
-            {
-                services.AddHttpClient(nameof(OrderingSvcClient), (serviceProvider, client) =>
-                {
-                    client.BaseAddress = new Uri(Startup.OrderingHttpClientBaseAddress);
-                })
-            .AddTypedClient<OrderingSvcClient>();
-            }
-            return services;
         }
     }
+
 }

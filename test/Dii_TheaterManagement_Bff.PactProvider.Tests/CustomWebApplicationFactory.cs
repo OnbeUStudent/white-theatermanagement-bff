@@ -24,7 +24,6 @@ namespace Dii_TheaterManagement_Bff.PactProvider.Tests
         protected override IHostBuilder CreateHostBuilder()
         {
 
-            Startup.OrderingHttpClientBaseAddress = "TBD";
             var builder = Host.CreateDefaultBuilder()
                                .ConfigureWebHostDefaults(webBuilder =>
                                {

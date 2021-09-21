@@ -14,5 +14,11 @@ namespace Dii_TheaterManagement_Bff.Clients
         {
             this.httpClient = httpClient;
         }
+
+        public async Task<string> GetMovies()
+        {
+            var movieList =  await httpClient.GetStringAsync("api/movies");
+            return movieList;
+        }
     }
 }
