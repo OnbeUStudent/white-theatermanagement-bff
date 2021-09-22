@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using Dii_TheaterManagement_Bff.Clients;
+using Dii_TheaterManagement_Bff.Clients.OrderingSvc;
 using System.Linq;
 using System.Threading.Tasks;
 

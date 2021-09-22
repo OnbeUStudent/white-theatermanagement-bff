@@ -1,4 +1,4 @@
-﻿using Dii_TheaterManagement_Bff.Clients;
+﻿using Dii_TheaterManagement_Bff.Clients.OrderingSvc;
 using Dii_TheaterManagement_Bff.Features.SyntheticBehavior;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;

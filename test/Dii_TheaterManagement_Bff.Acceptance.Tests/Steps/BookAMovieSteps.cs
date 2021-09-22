@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using PactTestingTools;
 using Dii_TheaterManagement_Bff.Clients;
 using Dii_TheaterManagement_Bff.Acceptance.Tests.Drivers;
+using Dii_TheaterManagement_Bff.Clients.OrderingSvc;
 
 namespace Dii_TheaterManagement_Bff.Acceptance.Tests.Steps
 {

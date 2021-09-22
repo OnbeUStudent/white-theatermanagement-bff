@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using Dii_TheaterManagement_Bff.Clients;
+using Dii_TheaterManagement_Bff.Clients.OrderingSvc;
 using Dii_TheaterManagement_Bff.Features.SyntheticBehavior;
 
 namespace Dii_TheaterManagement_Bff.Controllers

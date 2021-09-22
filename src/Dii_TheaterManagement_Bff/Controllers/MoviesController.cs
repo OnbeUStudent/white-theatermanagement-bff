@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Dii_TheaterManagement_Bff.Clients;
+using Dii_TheaterManagement_Bff.Clients.OrderingSvc;
 using Dii_TheaterManagement_Bff.Features.SyntheticBehavior;
 using System;
 
