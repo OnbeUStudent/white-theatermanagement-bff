@@ -2,8 +2,11 @@ using Dii_TheaterManagement_Bff.Acceptance.Tests.Steps;
 using Microsoft.AspNetCore.Mvc.Testing;
 using PactTestingTools;
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Threading.Tasks;
+using TechTalk.SpecFlow;
 using Xunit;
 
 namespace Dii_TheaterManagement_Bff.Acceptance.Tests.Drivers
@@ -15,7 +18,19 @@ namespace Dii_TheaterManagement_Bff.Acceptance.Tests.Drivers
 
         public HttpClient _client;
 
+        internal async Task AddMoviesToDatabase(Table table)
+        {
+            // In a real implementation, this is where you'd add your list of movies to the database.
 
+            // For this demo implementation we're just going to use the movies that already exist in the seed data.
+
+            // But to play it safe, we will make sure that the specified movies are in the list of seed data movies.
+
+            // Obtain the list of available movies
+            var getMoviesResponse = await _client.GetAsync("/api/movies");
+            var moviesAsJson = await getMoviesResponse.Content.ReadAsStringAsync();
+            List<Movie> movies = JsonConvert.DeserializeObject<List<Movie>>(moviesAsJson);
+        }
 
         public Driver(CustomWebApplicationFactory<Startup> factory
             , WebApplicationFactory<Dii_OrderingSvc.Fake.Startup> orderServiceFakeFactory

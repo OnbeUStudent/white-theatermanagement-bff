@@ -46,15 +46,15 @@ namespace Dii_TheaterManagement_Bff.Acceptance.Tests.Steps
             createCurrentBookingsView = currentBookings.CreateSet<CreateCurrentBookingsView>();
             foreach (CreateCurrentBookingsView descriptor in createCurrentBookingsView)
             {
-                names.Add(descriptor.tittle);
+                names.Add(descriptor.title);
             }
         }
 
         //Arrange
         [Given(@"I want to book (.*) on date (.*)")]
-        public void WhenIWantToBookThisCurrentBookingsOnThisDate(string tittle, string date)
+        public void WhenIWantToBookThisCurrentBookingsOnThisDate(string title, string date)
         {
-            bookingTittle = tittle;
+            bookingTittle = title;
             bookingDate = date;
         }
 

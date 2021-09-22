@@ -1,19 +1,15 @@
-﻿
-using Dii_OrderingSvc.Fake;
-using Dii_OrderingSvc.Fake.Data;
+﻿using Dii_OrderingSvc.Fake.Data;
 using Dii_TheaterManagement_Bff.Acceptance.Tests.Drivers;
 using Dii_TheaterManagement_Bff.Acceptance.Tests.Models;
 using FluentAssertions;
-using Microsoft.AspNetCore.Mvc.Testing;
 using Newtonsoft.Json;
-using PactTestingTools;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
-using System.Net.Http.Headers;
+using System.Text;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
-using Xunit;
 
 namespace Dii_TheaterManagement_Bff.Acceptance.Tests.Steps
 {
@@ -32,12 +28,28 @@ namespace Dii_TheaterManagement_Bff.Acceptance.Tests.Steps
 
         //Arange
         [Given(@"list of CurrentBookingsView")]
-        public void GivenListOfCurrentBookingsView(Table table)
+        public async void GivenListOfCurrentBookingsView(Table table)
         {
+            // Obtain the list of available movies
+            var getMoviesResponse = await _client.GetAsync("/api/movies");
+            var moviesAsJson = await getMoviesResponse.Content.ReadAsStringAsync();
+            List<Movie> movies = JsonConvert.DeserializeObject<List<Movie>>(moviesAsJson);
+
             createCurrentBookingsView = table.CreateSet<CreateCurrentBookingsView>();
             foreach (CreateCurrentBookingsView descriptor in createCurrentBookingsView)
             {
-                names.Add(descriptor.tittle);
+                Movie movie = movies.SingleOrDefault(m => m.Title == descriptor.title);
+                movie.Should().NotBeNull($"because there should be a movie with title {descriptor.title}");
+
+                // Ensure that the booking exists
+                var booking = new Booking()
+                {
+                    MonthId = descriptor.date,
+                    MovieId = movie.MovieId
+                };
+                var bodyForPutBooking = JsonConvert.SerializeObject(booking);
+                await _client.PutAsync($"api/bookings/{descriptor.date}", new System.Net.Http.StringContent(bodyForPutBooking, Encoding.UTF8, "application/json"));
+                names.Add(descriptor.title);
             }
         }
 
@@ -45,8 +57,8 @@ namespace Dii_TheaterManagement_Bff.Acceptance.Tests.Steps
         [When(@"I view bookings as an admin user on the admin page")]
         public async void WhenIViewBookingsAsAnAdminUserOnTheAdminPage()
         {
-
-            var response = _client.GetAsync("/api/bookings").Result;
+            // Act
+            var response = await _client.GetAsync("/api/bookings");
 
             // Get the response
             var bookingsJsonString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -57,22 +69,15 @@ namespace Dii_TheaterManagement_Bff.Acceptance.Tests.Steps
 
         }
 
-        //[When(@"I view bookings as an nonadmin user on the customer page")]
-        //public void WhenIViewBookingsAsAnNonadminUserOnTheCustomerPage()
-        //{
-        //    ScenarioContext.Current.Pending();
-        //}
-
         //Assert
         [Then(@"I am able to see all CurrentBookings")]
         public void ThenIAmAbleToSeeAllCurrentBookings()
         {
-
-            //foreach (Booking i in deserialized)
-            //{
-            //    i.Movie.Title.Should().BeOneOf(names);
-            //}
-            Assert.True(true);
+            foreach (Booking i in deserialized)
+            {
+                i.Movie.Title.Should().BeOneOf(names);
+            }
+            // Assert.True(true);
 
         }
 
