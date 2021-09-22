@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace Dii_TheaterManagement_Bff.Acceptance.Tests.Models
 {
-    class CreateCurrentBookingsView
+    class MovieView
     {
-        public DateTime date;
         public string title;
     }
 }

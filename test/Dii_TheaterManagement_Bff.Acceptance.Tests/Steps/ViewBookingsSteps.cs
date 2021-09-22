@@ -37,7 +37,7 @@ namespace Dii_TheaterManagement_Bff.Acceptance.Tests.Steps
             createCurrentBookingsView = table.CreateSet<CreateCurrentBookingsView>();
             foreach (CreateCurrentBookingsView descriptor in createCurrentBookingsView)
             {
-                names.Add(descriptor.tittle);
+                names.Add(descriptor.title);
             }
         }
 

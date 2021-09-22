@@ -1,4 +1,5 @@
-﻿Feature: View Bookings
+﻿@ignore
+Feature: View Bookings
 - FIX THIS
   As a user
   I want to view the CurrentBookings
@@ -6,7 +7,7 @@
 
    Background: CurrentBookings list
     Given list of CurrentBookingsView                          
-    | date    | tittle                                                |
+    | date    | title                                                |
     | 202110  | The Star Wars Holiday Special [Fake]                  |
     | 202112  | Star Wars: Episode VI - Return of the Jedi [Fake]     |
     | 202111  | Star Wars: Episode V - The Empire Strikes Back [Fake] |
